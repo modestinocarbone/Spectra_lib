@@ -14,8 +14,9 @@ In some signal processing computation specific spectrum tools can be really usef
 Clone the repository:
 ```bash
 git clone https://github.com/lunaticmercury/Spectra_lib.git
-
+```
+Install dependencies using pip:
 ```bash
 pip install -r requirements.txt
-
+```
 
