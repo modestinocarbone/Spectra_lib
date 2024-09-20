@@ -37,7 +37,7 @@ class Spectra(object):
         T=N*(1/fs)
         t = np.arange(0,T,1/fs)
 
-        if (len(x)/N % avg == 0):
+        if (len(x)/N >= avg):
     
             csd_cross=[]
             print("performing cross spectrum with "+str(avg)+" means")
@@ -53,7 +53,7 @@ class Spectra(object):
             CSD = (np.sum(buff , axis=0)/avg)
             
         else:
-            print("averaging not possible inpute len "+ str(len(x))+" is not a multiple of avg "+ str(avg))
+            print("averaging not possible inpute len "+ str(len(x))+" divided by the number of window"+str(N)+" excedes avg "+ str(avg))
             X = np.fft.fft(x)
             Y = np.fft.fft(y)
             CSD= 2*(1/fs)*Y*np.conj(X)/(N)
@@ -84,7 +84,7 @@ class Spectra(object):
         PSD = []
         fr = []
         
-        if (len(x)/N % avg == 0):
+        if (len(x)/N >= avg ):
     
             print("performing cross spectrum with "+str(avg)+" means")
             
@@ -122,7 +122,7 @@ class Spectra(object):
                 print('resolution is'+str( (10**(j+1))-10**j/len(freq[mask])))
             
         else:
-            print("averaging not possible inpute len "+ str(len(x))+" is not a multiple of avg "+ str(avg))
+             print("averaging not possible inpute len "+ str(len(x))+" divided by the number of window"+str(N)+" excedes avg "+ str(avg))
             X = np.fft.fft(x)
             Y = X
             PSD= 2*(1/fs)*Y*np.conj(X)/(N)
@@ -142,7 +142,7 @@ class Spectra(object):
         CSD = []
         fr = []
         
-        if (len(x)/N % avg == 0):
+        if (len(x)/N >= avg ):
     
             print("performing cross spectrum with "+str(avg)+" means")
             
@@ -179,7 +179,7 @@ class Spectra(object):
                     
             
         else:
-            print("averaging not possible inpute len "+ str(len(x))+" is not a multiple of avg "+ str(avg))
+            print("averaging not possible inpute len "+ str(len(x))+" divided by the number of window"+str(N)+" excedes avg "+ str(avg))
             X = np.fft.fft(x)
             Y = np.fft.fft(y)
             CSD= 2*(1/fs)*Y*np.conj(X)/(N)
