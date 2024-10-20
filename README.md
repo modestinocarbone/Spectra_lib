@@ -4,10 +4,18 @@ A Python library for custom FFT, cross-spectrum, and PSD calculations, with supp
 In some signal processing computation specific spectrum tools can be really useful like a multipurpose Swiss Army knife.
 
 ## Features
-- **Custom FFT**: Compute the Fast Fourier Transform (FFT) of a signal.
-- **Cross-Spectrum**: Calculate cross-spectral density between two signals with support for averaging.
-- **PSD Calculation**: Power Spectral Density (PSD) estimation for a signal with optimized algorithms for fast processing across 4 decades.
-- **Multi-Decade Optimized Algorithms**: Enhanced speed for cross-spectrum and PSD calculations using multiple decades.
+- **FFT**: Compute the FFT Fast Fourier transform of a signal.
+- **PSD**: Compute the PSD Power spectral density of a signal.
+- **ASD**:  Compute the ASD Amplitude Spectral density  of a signal.
+- **CSD**:  Compute the CSD Cross-Spectral density  between two signals.
+- **Coherence**:  Compute the Coherence between two signals.
+- **Fixed average**: PSD and CSD  is computed with a smaller frequency resolution for high frequency.
+- **Maximum average**: PSD and CSD  is computed with a smaller frequency resolution for higher decades and an discend average for every lower slot. 
+
+## PDF Support
+
+Pdf (Python_for_spectral_analysis.pdf) contains math and explenations of the usage and the working principles of the functions of this library.
+
 
 ## Installation
 
@@ -20,3 +28,10 @@ Install dependencies using pip:
 pip install -r requirements.txt
 ```
 
+## Usage
+clone the python file Spectra_lib.py in the desired workspace and put the following lines at the head of the main.py file
+
+```python
+from Spectra_lib import Spectra 
+spec = Spectra()
+```
