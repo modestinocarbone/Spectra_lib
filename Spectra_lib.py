@@ -364,10 +364,9 @@ class Spectra(object):
     
     
     
-    def Csd_MA(self,x,y,fs,Max_avg,N = None): 
+    def Csd_MA(self,x,y,fs,Max_avg,N = None, win_type = 'hann'): 
            
         #Power Specral Density Bertlett with Maximum Average
-    
         T=N*(1/fs)
         t = np.arange(0,T,1/fs)
         PSD = []
@@ -380,6 +379,7 @@ class Spectra(object):
         while(True):
             
             Window=int(N/(Max_avg/(10**j)))
+            win = signal.windows.get_window(win_type,Window)
             
             buff = []
             buff2 = []
@@ -389,9 +389,9 @@ class Spectra(object):
             
             for i in range(int(Max_avg/(10**j))):
     
-                X = np.fft.fft(x[i*Window:i*Window+Window])
-                Y = np.fft.fft(y[i*Window:i*Window+Window])
-                app= 2*(1/fs)*Y*np.conj(X)/(Window)
+                X = np.fft.fft(x[i*Window:i*Window+Window]*win)
+                Y = np.fft.fft(y[i*Window:i*Window+Window]*win)
+                app= 2*(1/fs)*Y*np.conj(X)/((win*win).sum())
                 psd_cross.append(app)
     
             buff = np.array(psd_cross)
@@ -412,6 +412,87 @@ class Spectra(object):
             
      
             if  Window == N:
+                
+                f_min = 0
+                mask = (freq >= f_min) & (freq <= f_max)
+                
+                PSD.extend(buff2[mask])
+                fr.extend(freq[mask])
+                
+                #append the last frequncy value when the maximum is reached
+                decades.append(0)
+                
+                #final index sorting
+                sorted_indices = np.argsort(fr)
+                fr = np.array(fr)[sorted_indices]
+                PSD = np.array(PSD)[sorted_indices]
+                
+                return fr[0:int(N/2)], np.array(PSD[0:int(N/2)]), np.array(averages), np.array(decades)
+           
+            
+            mask = (freq >= f_min) & (freq <= f_max)
+            
+               
+            PSD.extend(buff2[mask])
+            fr.extend(freq[mask])
+           
+            
+    
+        #final index sorting
+        sorted_indices = np.argsort(fr)
+        fr = np.array(fr)[sorted_indices]
+        PSD = np.array(PSD)[sorted_indices]
+        
+        return fr[0:int(N/2)], np.array(PSD[0:int(N/2)]), np.array(averages), np.array(decades)
+
+
+    def Csd_Min_Max(self,x,y,fs,Min_avg,Max_avg,N = None, win_type = 'hann'): 
+           
+        T=N*(1/fs)
+        t = np.arange(0,T,1/fs)
+        PSD = []
+        fr = []
+        j=0
+        averages=[]
+        decades=[]
+        
+    
+        while(True):
+            
+            Window=int(len(x)/(Max_avg/(10**j)))
+            win = signal.windows.get_window(win_type,Window)
+            
+            buff = []
+            buff2 = []
+            psd_cross= []
+            
+            averages.append((Max_avg/(10**j)))
+            
+            for i in range(int(Max_avg/(10**j))):
+    
+                X = np.fft.fft(x[i*Window:i*Window+Window]*win)
+                Y = np.fft.fft(y[i*Window:i*Window+Window]*win)
+                app= 2*(1/fs)*Y*np.conj(X)/((win*win).sum())
+                psd_cross.append(app)
+    
+            buff = np.array(psd_cross)
+            buff2 = (np.sum(buff , axis=0)/(Max_avg/(10**j)))
+            freq =[]
+            T=Window*(1/fs)
+            t = np.arange(0,T,1/fs)
+            freq = np.fft.fftfreq(t.shape[-1],d=1/fs)
+            
+            f_min = (fs/2)/(10**(j+1))
+            f_max = (fs/2)/(10**(j))
+            
+            decades.append(f_max)
+            
+            
+            j=j+1
+            
+            
+     
+            if  Window == int(len(x)/(Min_avg)):
                 
                 f_min = 0
                 mask = (freq >= f_min) & (freq <= f_max)
