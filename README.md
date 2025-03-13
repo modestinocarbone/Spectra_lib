@@ -12,11 +12,6 @@ In some signal processing computation specific spectrum tools can be really usef
 - **Fixed average**: PSD and CSD  is computed with a smaller frequency resolution for high frequency.
 - **Maximum average**: PSD and CSD  is computed with a smaller frequency resolution for higher decades and an discend average for every lower slot. 
 
-## PDF Support
-
-Pdf (Python_for_spectral_analysis.pdf) contains math and explanations of the usage and the working principles of the functions of this library.
-
-
 ## Installation
 
 Clone the repository:
