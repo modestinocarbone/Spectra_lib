@@ -14,13 +14,26 @@ Clone the repository:
 ```bash
 git clone https://github.com/modestinocarbone/Spectra_lib
 ```
-Install dependencies using pip:
+Install dependencies first:
 ```bash
 pip install -r requirements.txt
 ```
 
+Install dependencies first:
+
+```bash
+pip install -r requirements.txt
+```
+
+Install library:
+
+```bash
+pip install .
+```
+
 ## Usage
-clone the python file Spectra_lib.py in the desired workspace and put the following lines at the head of the main.py file
+
+Use the following header in your project:
 
 ```python
 from Spectra_lib import Spectra 
@@ -28,3 +41,4 @@ spec = Spectra()
 ```
 
 The file example.py is a perfect proof of concept of various kind of function implementations offered by the library
+
