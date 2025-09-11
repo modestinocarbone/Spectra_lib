@@ -14,10 +14,6 @@ Clone the repository:
 ```bash
 git clone https://github.com/modestinocarbone/Spectra_lib
 ```
-Install dependencies first:
-```bash
-pip install -r requirements.txt
-```
 
 Install dependencies first:
 
@@ -41,4 +37,5 @@ spec = Spectra()
 ```
 
 The file example.py is a perfect proof of concept of various kind of function implementations offered by the library
+
 
