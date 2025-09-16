@@ -8,7 +8,7 @@ Created on Sat Mar 22 08:20:55 2025
 import matplotlib.pyplot as plt
 
 
-def marker_plotter_MA(avgerages, decades, label):
+def marker_plotter_MA(averages, decades, label):
 
     colors = [
     'lightblue', 'lightgreen', 'lightcoral',  'lightpink', 'lavender', 'lightcyan', 'peachpuff', 'mintcream', 'honeydew', 'thistle',
@@ -25,9 +25,9 @@ def marker_plotter_MA(avgerages, decades, label):
         # Colorare la porzione
         
         if(label):
-            if(avgerages[i]==1):
-                plt.axvspan(decades[i],decades[i+1], color=colors[i], alpha=0.5, label=str(int(avgerages[i]))+' average')
+            if(averages[i]==1):
+                plt.axvspan(decades[i],decades[i+1], color=colors[i], alpha=0.5, label=str(int(averages[i]))+' average')
             else:
-                plt.axvspan(decades[i],decades[i+1], color=colors[i], alpha=0.5, label=str(int(avgerages[i]))+' averages')
+                plt.axvspan(decades[i],decades[i+1], color=colors[i], alpha=0.5, label=str(int(averages[i]))+' averages')
         else:
                 plt.axvspan(decades[i],decades[i+1], color=colors[i], alpha=0.5)

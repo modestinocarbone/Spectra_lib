@@ -194,18 +194,18 @@ class Spectra:
         
         return  csd_Min_Max(x, y, fs, Min_avg, Max_avg, N, window)
     
-    def Avg_dec_col(self, avgerages, decades, label):
+    def Avg_dec_col(self, averages, decades, label):
         
         """
         Description:\n
         This function computes plots frequency ranges with shaded regions and dashed vertical lines based on averaging parameters.\n
 
         Parameters:\n
-        - avgerages (list of int): List of averaging values used for each frequency range.\n
+        - averages (list of int): List of averaging values used for each frequency range.\n
         - decades (list of int): List of frequency range divisions in logarithmic scale.\n
         - label (boolean): Boolean indicating whether to add labels to the shaded regions.\n
 
         The function highlights different frequency ranges using different colors and marks decade boundaries with dashed lines.\n
         """
 
-        return marker_plotter_MA(avgerages, decades, label);
+        return marker_plotter_MA(averages, decades, label);
