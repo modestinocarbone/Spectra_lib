@@ -5,7 +5,7 @@
  *  Last update: 02/10/2025
  *
  *  Description:
- *      Here are collected only graphical functions.
+ *      save and load functions.
  *
 """
 
@@ -61,5 +61,6 @@ def loadwstyle(file_name):
         raise Exception(f"File '{file_name}' not found")
     
     return f, spec, avg, dec
+
 
 
