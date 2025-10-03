@@ -22,7 +22,7 @@ class Spectra:
         print("Spectra functions imported")
 
 # FFT ------------------------------------------      
-    def Fft(self,x, fs, window , N):
+    def Fft(self, x, fs, window , N):
         """
         Description:\n
         This function computes the Fast Fourier Transform (FFT) of a given signal `x`, applying a specified window function (`window`) and normalizing the result.\n
@@ -41,7 +41,7 @@ class Spectra:
         return fft(x, fs, window,N )
 
 # PSD ------------------------------------------ 
-    def Psd(self,x, fs, avg, window, N):
+    def Psd(self, x, fs, avg, window, N):
         """
         Description:\n
         This function computes the **Power Spectral Density (PSD)** of a signal `x` using the **Bartlett's method** (also known as the **modified periodogram**). It applies a specified window function (`window`) and averages the results over multiple segments. This method is commonly used for estimating the PSD of a signal, especially when the signal is not stationary over time.
@@ -100,7 +100,7 @@ class Spectra:
         """
         return psd_Min_Max(x, fs, Min_avg, Max_avg, window)
     
-    def psd_composite(x, fs, avg, win_type, type):
+    def psd_composite(self, x, fs, avg, win_type, type):
         """
         Computes the composite Power Spectral Density (CSD) of the 'x' input array.\n
 
@@ -188,7 +188,7 @@ class Spectra:
         """
         return  csd_Min_Max(x, y, fs, Min_avg, Max_avg, window)
     
-    def csd_composite(x, y, fs, avg, win_type, type):
+    def csd_composite(self, x, y, fs, avg, win_type, type):
         """
         Computes the composite Cross Spectral Density (CSD) between corresponding elements of two input arrays.\n
 
@@ -216,7 +216,7 @@ class Spectra:
         return csd_composite(x, y, fs, avg, win_type, type)
 # LOAD & STORE OPERATION   
 
-    def Save(f, spec, file_name):
+    def Save(self, f, spec, file_name):
         """
         Saves four arrays (frequency, spectrum, average, and decimation) into a tab-delimited text file.\n
 
@@ -232,7 +232,7 @@ class Spectra:
         """
         save(f, spec, file_name)
 
-    def Savewstyle(f, spec, avg, dec, file_name):
+    def Savewstyle(self, f, spec, avg, dec, file_name):
         """
         Saves four arrays (frequency, spectrum, averages, and decades) into a tab-delimited text file.\n
 
@@ -248,7 +248,7 @@ class Spectra:
         """
         savewstyle(f, spec, avg, dec, file_name)
 
-    def Load(file_name):
+    def Load(self, file_name):
         """
         Loads frequency and spectrum data from a tab-delimited text file.\n
 
@@ -263,7 +263,7 @@ class Spectra:
         """
         return load(file_name)
 
-    def Loadwstyle(file_name):
+    def Loadwstyle(self, file_name):
         """
         Loads frequency, spectrum, average, and decimation data from a tab-delimited text file.\n
 
