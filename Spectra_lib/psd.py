@@ -1,10 +1,14 @@
-
 """
-Created on Fri March 21 2025
-
-@author: Modestino Carbone
-
-
+ *  File:        psd.py
+ *  Author:      Modestino Carbone
+ *  Created on:  21/03/2025
+ *  Last update: 01/10/2025
+ *
+ *  Description:
+ *      - 'psd_bartlett' and 'psd_welch': The main basics of Power spectral density (PSD).
+ *      - 'psd_Min_Max': Power spectral density (CSD) with
+ *      advanced averaging options.
+ *
 """
 
 import numpy as np
@@ -12,85 +16,114 @@ import scipy.signal as signal
 import scipy.fft as fourier
 
 def psd_bartlett(x, fs, avg, window, N):
-    
-    #window genaration
-    win = signal.windows.get_window(window,N)
-    
-    if (len(x)/N >= avg):
-        
-        psd_buff = []
-        
-        for i in range(avg):
-            
-            X = fourier.fft(x[i*N:i*N+N]*win) 
-            app = 2*(1/fs)*X*np.conj(X)/((win*win).sum())
-            psd_buff.append(app)
-            
-        buff = np.array(psd_buff)
 
-        PSD = (np.sum(buff , axis=0)/avg)
+    # Check length
+    if(N > len(x)):
+        raise Exception(f"Window length N: {N} is greater than actual input dimension: {len(x)}")
+      
+    # Verify that N is a multiple of len(x)
+    if(len(x) % N != 0):
+        raise Exception(f"input length: {len(x)} is not a multiple of N: {N}")
         
-    else:
+    # verify number of averages
+    if (len(x) // N < avg):
+       raise Exception(f"Too many averages is: {avg}; actual maximum is: {len(x)/N}")
+
+    # Window genaration
+    win = signal.windows.get_window(window,N)
+
+    # Buffer of PSD that later will be averaged
+    psd_buff = []
+    
+    # Averaging loop
+    for i in range(avg):
         
-        X = fourier.fft(x)
-        PSD = 2*(1/fs)*X*np.conj(X)/((win*win).sum())
-        
+        X = fourier.fft(x[i*N:i*N+N]*win)
+        app = 2*(1/fs)*X*np.conj(X)/((win*win).sum())
+        psd_buff.append(app)
+    
+    # Converts out buffer
+    buff = np.array(psd_buff)
+
+    # Final average
+    PSD = (np.sum(buff , axis=0)/avg)
+    
+    # Frequency axis
     freq = np.linspace(0,fs,N)
     
-    return freq[0:int(N/2)], PSD[0:int(N/2)]  
-
-
+    return freq[1:N//2], PSD[1:N//2]
 
 def psd_welch(x, fs, avg, window, N):
     
-    #window genaration
+    # Check length
+    if(N > len(x)):
+        raise Exception(f"Window length N: {N} is greater than actual input dimension: {len(x)}")
+      
+    # Verify that len(x) is a multiple of N
+    if(len(x) % N != 0):
+        raise Exception(f"input length: {len(x)} is not a multiple of N: {N}")
+        
+    # verify number of averages
+    if (len(x) // N < avg):
+       raise Exception(f"Too many averages is: {avg}; actual maximum is: {len(x)/N}")
+
+    # Window genaration
     win = signal.windows.get_window(window,N)
+
+    # Buffer of PSD that later will be averaged
+    psd_buff = []
     
-    if (len(x)/N >= avg):
+    # Averaging loop
+    for i in range(avg*2 -1):
         
-        psd_buff = []
+        X = fourier.fft(x[i*int(N/2):i*int(N/2)+N]*win) 
+        app = 2*(1/fs)*X*np.conj(X)/((win*win).sum())
+        psd_buff.append(app)
         
-        for i in range(avg*2 -1):
-            
-            X = fourier.fft(x[i*int(N/2):i*int(N/2)+N]*win) 
-            app = 2*(1/fs)*X*np.conj(X)/((win*win).sum())
-            psd_buff.append(app)
-            
-            
-        buff = np.array(psd_buff)
-        
-        PSD = (np.sum(buff , axis=0)/(avg*2 -1))
-        
-    else:
-        
-        X = fourier.fft(x)
-        PSD = 2*(1/fs)*X*np.conj(X)/((win*win).sum())
-        
+    # Converts out buffer
+    buff = np.array(psd_buff)
+
+    # Final average
+    PSD = (np.sum(buff , axis=0)/(avg*2 -1))
+    
+    # Frequency axis
     freq = np.linspace(0,fs,N)
     
-    return freq[0:int(N/2)], PSD[0:int(N/2)]  
+    return freq[1:N//2], PSD[1:N//2]
 
+def psd_Min_Max( x, fs, Min_avg, Max_avg, win_type): 
 
-
-
-
-def psd_MA(x, fs, Max_avg, N, win_type): 
-       
-    #Power Specral Density Bertlett with Maximum Average
+    # Verify that len(x) is a multiple of Min_avg
+    if(len(x) % Min_avg != 0):
+        raise Exception(f"input length: {len(x)} is not a multiple of the minimum averages requested: {Min_avg}")
+    
+    # Verify that len(x) is a multiple of Max_avg
+    if(len(x) % Max_avg != 0):
+        raise Exception(f"input length: {len(x)} is not a multiple of the maximum averages requested: {Max_avg}")
+    
+    # check average coherence
+    if(Max_avg < Min_avg):
+        raise Exception(f"Minimum averages parameter: {Min_avg} is greater than maximum limit: {Max_avg}")
+    
+    # final vector which contains computed spectrum
     PSD = []
+    # final vector of frequency
     fr = []
+    # loop index
     j=0
+    # Vectors of averages and decades boundaries
     averages=[]
     decades=[]
     
     while(True):
         
-        Window=int(N/(Max_avg/(10**j)))
-        win = signal.windows.get_window(win_type,Window)
+        # cration of window
+        Window = int(len(x)/(Max_avg/(10**j)))
+        win    = signal.windows.get_window(win_type,Window)
         
-        buff = []
-        buff2 = []
-        csd_cross= []
+        buff      = []
+        buff2     = []
+        csd_cross = []
         
         averages.append((Max_avg/(10**j)))
         
@@ -102,18 +135,22 @@ def psd_MA(x, fs, Max_avg, N, win_type):
 
         buff = np.array(csd_cross)
         buff2 = (np.sum(buff , axis=0)/(Max_avg/(10**j)))
+
         freq =[]
-
         freq = np.linspace(0,fs,int(len(x)/(Max_avg/(10**j))))
-
+        
+        # compute max/min frequency
         f_min = (fs/2)/(10**(j+1))
         f_max = (fs/2)/(10**(j))
         
+        # append the max frequency value in decades vector
         decades.append(f_max)
-        
+
+        # increment j       
         j=j+1
         
-        if  Window == N:
+        # check if window dimension is equal to the smallest window possible
+        if  Window == len(x)//(Min_avg):
             
             f_min = 0
             mask = (freq >= f_min) & (freq <= f_max)
@@ -121,97 +158,50 @@ def psd_MA(x, fs, Max_avg, N, win_type):
             PSD.extend(buff2[mask])
             fr.extend(freq[mask])
             
-            #append the last frequncy value when the maximum is reached
+            # append the last frequncy value when the maximum is reached
             decades.append(0)
             
-            #final index sorting
+            # final index sorting
             sorted_indices = np.argsort(fr)
             fr = np.array(fr)[sorted_indices]
             PSD = np.array(PSD)[sorted_indices]
             
-            return fr[0:int(N/2)], np.array(PSD[0:int(N/2)]), np.array(averages), np.array(decades)
-        
+            return fr[1:], PSD[1:], np.array(averages), np.array(decades)
+       
         mask = (freq >= f_min) & (freq <= f_max)
-              
+        
         PSD.extend(buff2[mask])
         fr.extend(freq[mask])
-       
-    #final index sorting
-    sorted_indices = np.argsort(fr)
-    fr = np.array(fr)[sorted_indices]
-    PSD = np.array(PSD)[sorted_indices]
-    
-    return fr[0:int(N/2)], np.array(PSD[0:int(N/2)]), np.array(averages), np.array(decades)
 
+def psd_composite(x, fs, avg, win_type, type):
 
-
-
-def psd_Min_Max( x, fs, Min_avg, Max_avg, N, win_type): 
-       
-    PSD = []
+    # buffer output array
     fr = []
-    j=0
-    averages=[]
-    decades=[]
+    PSD = []
+
+    for i in range(len(x)):
+
+        # check if average is possible    
+        if(len(x[i]) % avg != 0):
+            raise Exception(f"input length: {len(x[i])} is not a multiple of avg: {avg}")
+        
+        # just remenber that resolution is fs/W 
+        # where W is the length of each subwindow
+        W = len(x[i])//avg
+
+        # just for initialization
+        f   = [] 
+        csd = [] 
+
+        # selected operation depends on the string type
+        if type == "bartlett":
+            f, csd  = psd_bartlett(x[i], fs[i], avg, win_type, W)  
+        if type == "welch":
+            f, csd  = psd_welch(x[i], fs[i], avg, win_type, W)  
+        
+        # mask is from 10**(int(np.log10(fs[i]/2))-1) 10**int(np.log10(fs[i]/2))
+        mask = (f >= 10**(int(np.log10(fs[i]/2))-1)) & (f <= 10**int(np.log10(fs[i]/2)))
+        fr.extend(f[mask])
+        PSD.extend(csd[mask])
     
-    while(True):
-        
-        Window=int(len(x)/(Max_avg/(10**j)))
-        win = signal.windows.get_window(win_type,Window)
-        
-        buff = []
-        buff2 = []
-        psd_cross= []
-        
-        averages.append((Max_avg/(10**j)))
-        
-        for i in range(int(Max_avg/(10**j))):
-
-            X = fourier.fft(x[i*Window:i*Window+Window]*win)
-            app= 2*(1/fs)*X*np.conj(X)/((win*win).sum())
-            psd_cross.append(app)
-
-        buff = np.array(psd_cross)
-        buff2 = (np.sum(buff , axis=0)/(Max_avg/(10**j)))
-        freq =[]
-
-        freq = np.linspace(0,fs,int(len(x)/(Max_avg/(10**j))))
-        
-        f_min = (fs/2)/(10**(j+1))
-        f_max = (fs/2)/(10**(j))
-        
-        decades.append(f_max)
-                
-        j=j+1
-        
-        if  Window == int(len(x)/(Min_avg)):
-            
-            f_min = 0
-            mask = (freq >= f_min) & (freq <= f_max)
-            
-            PSD.extend(buff2[mask])
-            fr.extend(freq[mask])
-            
-            #append the last frequncy value when the maximum is reached
-            decades.append(0)
-            
-            #final index sorting
-            sorted_indices = np.argsort(fr)
-            fr = np.array(fr)[sorted_indices]
-            PSD = np.array(PSD)[sorted_indices]
-            
-            return fr[0:int(N/2)], np.array(PSD[0:int(N/2)]), np.array(averages), np.array(decades)
-       
-        mask = (freq >= f_min) & (freq <= f_max)
-        
-        PSD.extend(buff2[mask])
-        fr.extend(freq[mask])
-       
-    #final index sorting
-    sorted_indices = np.argsort(fr)
-    fr = np.array(fr)[sorted_indices]
-    PSD = np.array(PSD)[sorted_indices]
-    
-    return fr[0:int(N/2)], np.array(PSD[0:int(N/2)]), np.array(averages), np.array(decades)
-
-
+    return fr, PSD

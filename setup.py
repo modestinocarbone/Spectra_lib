@@ -1,15 +1,21 @@
 # -*- coding: utf-8 -*-
 """
-Created on Wed Sep 10 17:23:32 2025
-
-@author: Modestino Carbone
+ *  File:        setup.py
+ *  Author:      Modestino Carbone
+ *  Created on:  10/09/2025
+ *  Last update: 03/10/2025
+ *
+ *  Description:
+ *      - 'csd_basic'and 'csd_welch' : The main basics of cross-spectral density (CSD).
+ *      - 'csd_Min_Max': Cross spectral density (CSD) with
+ *      advanced averaging options.
+ *
 """
-
 from setuptools import setup, find_packages
 
 setup(
     name="Spectra_lib",
-    version="2.0",
+    version="2.1",
     author="Modestino Carbone",
     description="A collection of Python spectrum function for Harmonic analysis",
     packages=find_packages(),
