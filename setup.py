@@ -3,7 +3,7 @@
  *  File:        setup.py
  *  Author:      Modestino Carbone
  *  Created on:  10/09/2025
- *  Last update: 03/10/2025
+ *  Last update: 29/10/2025
  *
  *  Description:
  *      - 'csd_basic'and 'csd_welch' : The main basics of cross-spectral density (CSD).
@@ -20,3 +20,4 @@ setup(
     description="A collection of Python spectrum function for Harmonic analysis",
     packages=find_packages(),
 )
+
