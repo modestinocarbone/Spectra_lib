@@ -78,7 +78,7 @@ def csd_welch(x, y, fs, avg, window, N):
     for i in range(avg*2-1):
         
         X = fourier.fft(x[i*int(N/2):i*int(N/2)+N]*win)  
-        Y = fourier.fft(x[i*int(N/2):i*int(N/2)+N]*win) 
+        Y = fourier.fft(y[i*int(N/2):i*int(N/2)+N]*win) 
         app = 2*(1/fs)*Y*np.conj(X)/((win*win).sum())
         csd_buff.append(app)
 
@@ -212,3 +212,4 @@ def csd_composite(x, y, fs, avg, win_type, type):
         CSD.extend(csd[mask])
     
     return fr, CSD
+
