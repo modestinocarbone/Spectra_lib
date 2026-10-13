@@ -9,9 +9,9 @@ The measurement system considered in this work is illustrated in the following d
 ```mermaid
 flowchart LR
 
-N1["Additive noise, b(t)"] --> SUM1((+))
+N1["Additive noise, b(t)"] --> SUM1["+"]
 DUT["DUT, a(t)"] --> SUM1
-DUT --> SUM2((+))
+DUT --> SUM2["+"]
 N2["Additive noise, c(t)"] --> SUM2
 
 SUM1 -->|"x(t)"| CC["Cross-correlation"]
@@ -107,10 +107,10 @@ The measurement configuration is illustrated below.
 ```mermaid
 flowchart LR
 
-N1["Additive noise, b(t)"] --> SUM1((+))
+N1["Additive noise, b(t)"] --> SUM1["+"]
 DUT["DUT, a(t)"] --> H["H(t)"]
 H -->|"v(t)"| SUM1
-DUT --> SUM2((+))
+DUT --> SUM2["+"]
 N2["Additive noise, c(t)"] --> SUM2
 
 SUM1 -->|"x(t)"| CC["Cross-correlation"]
