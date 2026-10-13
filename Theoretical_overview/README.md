@@ -172,7 +172,7 @@ $$
 The variance of the estimated output spectrum is expressed as
 
 $$
-VAR[|\widehat{S}_{V}|] = \frac{(2-\gamma_{X,Y}^2)\widehat{S}_{V}}{\gamma_{X,Y}^2N}
+VAR[\widehat{S}_{V}] = \frac{(2-\gamma_{X,Y}^2)\widehat{S}_{V}}{\gamma_{X,Y}^2N}
 $$
 
 These expressions relate the statistical uncertainty of the estimates to the number of averaged records and the coherence between the measurement channels. As the number of averages increases, the variance decreases. Higher coherence also generally corresponds to a more reliable transfer function estimate and lower statistical uncertainty.
