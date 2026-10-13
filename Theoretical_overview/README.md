@@ -158,7 +158,7 @@ These relationships connect the cross-spectrum to the transfer function magnitud
 The magnitude-squared coherence is defined as
 
 $$
-\gamma_{X,Y}^2 =\frac{|\widehat{S}_{X,Y}|}{S_XS_Y}
+\gamma_{X,Y}^2 =\frac{|\widehat{S}_{X,Y}|^2}{S_XS_Y}
 $$
 
 Coherence characterizes the relationship between the two measured signals and provides an indication of how reliably the transfer function can be estimated from their cross-spectrum.
