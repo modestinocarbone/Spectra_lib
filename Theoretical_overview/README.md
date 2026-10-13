@@ -128,7 +128,7 @@ class SUM1,SUM2 processing
 The two measured signals are described by
 
 $$
-x(t) = a(t)H(t) + b(t)
+x(t) = a(t)*H(t) + b(t)
 $$
 
 $$
