@@ -89,7 +89,7 @@ $$
 Its variance is expressed as
 
 $$
-VAR[\Re(\widehat{S}_{X,Y})]= \frac{1}{2N}(S_XS_Y +\Re(S_{X,Y})+\Im(S_{X,Y})
+VAR[\Re(\widehat{S}_{X,Y})]= \frac{1}{2N}(S_XS_Y +\Re(S_{X,Y})+\Im(S_{X,Y}))
 $$
 
 The real-part estimator provides an alternative way to exploit the shared signal component in the two measurement channels. Its statistical performance depends on the spectral properties of the measured signals and on the correlation assumptions made for the noise contributions.
