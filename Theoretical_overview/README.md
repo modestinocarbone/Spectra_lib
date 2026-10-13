@@ -4,7 +4,7 @@
 
 Cross-correlation is a measurement technique that allows a common signal component to be distinguished from independent additive noise contributions. The principle relies on acquiring two signals that share the same underlying source but are affected by different noise sources.
 
-The measurement system considered in this work is illustrated in the following diagram. The device under test (DUT) generates the signal \(a(t)\), which is split into two measurement paths. Each path is affected by a different additive noise contribution, \(b(t)\) and \(c(t)\), resulting in the measured signals \(x(t)\) and \(y(t)\), respectively.
+The measurement system considered in this article is illustrated in the following diagram. The device under test (DUT) generates the signal \(a(t)\), which is split into two measurement paths. Each path is affected by a different additive noise contribution, \(b(t)\) and \(c(t)\), resulting in the measured signals \(x(t)\) and \(y(t)\), respectively.
 
 ```mermaid
 flowchart LR
